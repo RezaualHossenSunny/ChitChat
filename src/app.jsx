@@ -1,3 +1,4 @@
+import Registration from "./pages/Registration";
 
 
 export function App() {
@@ -5,7 +6,7 @@ export function App() {
 
   return (
    <>
-   
+   <Registration/>
    </>
   )
 }
