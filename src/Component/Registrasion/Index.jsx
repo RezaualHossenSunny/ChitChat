@@ -1,11 +1,12 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { signUp } from "../../Validate/Validation";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification} from "firebase/auth";
+import { PropagateLoader } from "react-spinners";
 
-const Regicomp = () => {
+const Regicomp = ({toast}) => {
   const auth = getAuth();
-
+const [loding,Setloding]=useState(false)
   const initialValues = {
     fullName: "",
     email: "",
@@ -22,20 +23,62 @@ const Regicomp = () => {
 
   // firebase poblem fixed chatgpt
 
-  
+
   const createSignUp = () => {
+    Setloding(true)
     createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
       .then((userCredential) => {
-        console.log('User signed up successfully:', userCredential.user);
-        // Optionally reset the form or navigate
+      sendEmailVerification(auth.currentUser).then(()=>{
+        toast.success('verification your email ', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          
+          });
+          Setloding(false)
+        
+      })
+      .catch((error)=>{
+        toast.error(error.message, {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          
+          });
+          Setloding(false)
+        
+      })
         formik.resetForm();
       })
       .catch((error) => {
-        console.log('Error during sign up:', error.message);
+        if( error.message.includes("auth/email-already-in-use")){
+          toast.error('email allredy used ', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            
+            });
+            Setloding(false)
+        }
       });
   };
 
-  console.log(formik);
+  // console.log(formik);
   
   return (
     <>
@@ -84,8 +127,11 @@ const Regicomp = () => {
             </p>
           )}
           
-          <button className="w-full py-3 bg-slate-950 text-white rounded-xl" type="submit">
-            Sign Up
+          <button disabled={loding} className="w-full py-3 bg-slate-950 text-white rounded-xl" type="submit">
+            {
+              loding ? <PropagateLoader color="#ffff"  size={6}/>    :"Sign Up"
+
+            }
           </button>
         </form>
         <p className="mt-4 font-roboto font-bold text-base text-gray-400">

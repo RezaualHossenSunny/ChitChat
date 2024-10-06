@@ -1,9 +1,10 @@
 import React from 'react'
 import Regicomp from '../Component/Registrasion/Index'
-
+import { ToastContainer, toast } from 'react-toastify';
 const Registration = () => {
   return (
     <>
+    <ToastContainer />
     <div className="w-full h-screen flex items-center justify-center">
         <div className="w-2/4 bg-white shadow-md rounded-md  p-4 flex items-center gap-x-10 justify-between">
 
@@ -16,7 +17,7 @@ const Registration = () => {
         {/* rgi */}
 
         <div  className="w-[45%]">
-            <Regicomp/>
+            <Regicomp toast={toast}/>
         </div>
 
         </div>
