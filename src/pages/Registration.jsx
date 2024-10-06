@@ -8,7 +8,7 @@ const Registration = () => {
     <>
       <ToastContainer />
       <div className="w-full h-screen flex items-center justify-center">
-        <div className="w-2/4 bg-white shadow-md rounded-md  p-4 flex items-center gap-x-10 justify-between">
+        <div className=" w-full md:w-2/4 bg-white shadow-md rounded-md  p-4 flex items-center gap-x-10 justify-between">
           {/* img */}
           <div className=" hidden md:block  w-[45%]">
             <Lottie animationData={regiani} loop={true} />
@@ -16,7 +16,7 @@ const Registration = () => {
 
           {/* rgi */}
 
-          <div className="w-[45%]">
+          <div className=" w-full md:w-[45%]">
             <Regicomp toast={toast} />
           </div>
         </div>
