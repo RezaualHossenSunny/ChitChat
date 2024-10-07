@@ -7,6 +7,8 @@ import { PropagateLoader } from "react-spinners";
 const Regicomp = ({toast}) => {
   const auth = getAuth();
 const [loding,Setloding]=useState(false)
+
+
   const initialValues = {
     fullName: "",
     email: "",
