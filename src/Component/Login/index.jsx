@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { login } from "../../Validate/Validation";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { PropagateLoader } from "react-spinners";
+import { useDispatch } from "react-redux";
+import { logedInuse } from "../../Feture/Slices/Loginslice";
 
 
 const Logincomp = ({ toast }) => {
   const auth = getAuth();
   const [loding, Setloding] = useState(false);
-
+  const dispatch = useDispatch();
   const initialValues = {
     email: "",
     password: "",
@@ -28,7 +30,7 @@ const Logincomp = ({ toast }) => {
     signInWithEmailAndPassword(auth, formik.values.email, formik.values.password)
     .then(({user}) => {
     if(user.emailVerified == true){
-    console.log('done');
+    dispatch(logedInuse(user));
     
     }else{
       toast.error("please verify your email", {
