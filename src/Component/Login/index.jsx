@@ -31,6 +31,7 @@ const Logincomp = ({ toast }) => {
     .then(({user}) => {
     if(user.emailVerified == true){
     dispatch(logedInuse(user));
+    localStorage.setItem("user", JSON.stringify(user));
     
     }else{
       toast.error("please verify your email", {

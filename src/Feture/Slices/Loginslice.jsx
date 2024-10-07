@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const userslice =createSlice({
     name: "Login",
     initialState: {
-        login:null
+        login:JSON.parse(localStorage.getItem("user")) || null ,
     },
     reducers:{
         logedInuse:(state,action)=>{
