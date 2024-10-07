@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from "./pages/Home";
 import Logeduserourter from "./PrivateRout/Logeduserourter";
 import Notloginuser from "./PrivateRout/Notloginuser";
+import Message from "./pages/Message";
 
 export function App() {
 const router = createBrowserRouter(
@@ -12,6 +13,7 @@ const router = createBrowserRouter(
     <Route>
       <Route element ={<Logeduserourter/>}>
       <Route path="/" element ={ <Home/>}/>
+      <Route path="/message" element ={ <Message/>}/>
       </Route>
 
       <Route element={<Notloginuser/>}>

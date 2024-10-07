@@ -1,6 +1,8 @@
 import React from "react";
-import { FaUserFriends } from "react-icons/fa";
-import { IoMdNotifications } from "react-icons/io";
+import {FaUserFriends } from "react-icons/fa";
+import { FaFacebookMessenger } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   return (
     <>
@@ -18,14 +20,14 @@ const Navbar = () => {
 
         {/* link */}
         <div className="flex items-center gap-x-5">
-       <div className="w-14 h-14 rounded-full bg-sky-400 flex items-center justify-center">
+       <Link to='/' className="w-14 h-14 rounded-full bg-sky-400 flex items-center justify-center">
        <FaUserFriends className="text-3xl  text-white  " />
-       </div>
+       </Link>
 
-      <div className="w-14 h-14 rounded-full bg-sky-400 flex items-center justify-center">
+      <Link to='/message' className="w-14 h-14 rounded-full bg-sky-400 flex items-center justify-center">
 
-      <IoMdNotifications className="text-3xl  text-white" />
-      </div>
+      <FaFacebookMessenger className="text-3xl  text-white" />
+      </Link>
         </div>
 
         {/* logout */}
