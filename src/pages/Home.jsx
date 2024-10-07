@@ -8,7 +8,7 @@ import Friend from "../Component/Friends";
 const Home = () => {
   return (
     <>
-      <div className="grid  grid-cols-[1.5fr,4fr] px-5">
+      <div className="grid   grid-cols-[1.5fr,4fr] px-5">
        <div className=" w-full ">
        <Userlist/>
        </div>

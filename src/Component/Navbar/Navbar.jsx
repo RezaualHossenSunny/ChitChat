@@ -26,7 +26,7 @@ const Navbar = () => {
   
   return (
     <>
-      <div className="flex items-center justify-between bg-slate-800 py-5 rounded-md px-5">
+      <div className=" flex items-center justify-between bg-slate-800 py-5 rounded-md px-5">
         {/* photo */}
         <div className="flex items-center gap-x-5">
           <div className="h-14 w-14 rounded-full bg-orange-400 overflow-hidden"></div>

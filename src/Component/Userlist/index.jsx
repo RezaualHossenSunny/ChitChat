@@ -3,7 +3,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 const Userlist = () => {
   return (
     <>
-      <div className="p-4">
+      <div className="p-4 h-[400px]  overflow-auto">
         <h1 className="font-roboto text-xl  py-4 font-semibold ">All Users</h1>
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-x-2">
