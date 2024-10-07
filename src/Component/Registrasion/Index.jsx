@@ -1,14 +1,18 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { signUp } from "../../Validate/Validation";
-import { getAuth, createUserWithEmailAndPassword ,sendEmailVerification} from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { PropagateLoader } from "react-spinners";
+import { Link, useNavigate } from "react-router-dom";
 
-const Regicomp = ({toast}) => {
+const Regicomp = ({ toast }) => {
   const auth = getAuth();
-const [loding,Setloding]=useState(false)
-
-
+  const [loding, Setloding] = useState(false);
+  const navigate = useNavigate();
   const initialValues = {
     fullName: "",
     email: "",
@@ -25,46 +29,50 @@ const [loding,Setloding]=useState(false)
 
   // firebase poblem fixed chatgpt
 
-
   const createSignUp = () => {
-    Setloding(true)
-    createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
+    Setloding(true);
+    createUserWithEmailAndPassword(
+      auth,
+      formik.values.email,
+      formik.values.password
+    )
       .then((userCredential) => {
-      sendEmailVerification(auth.currentUser).then(()=>{
-        toast.success('verification your email ', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            toast.success("verification your email ", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            setTimeout(() => {
+              navigate('/login')
+            }, 2000);
+            Setloding(false);
+          })
+          .catch((error) => {
+            toast.error(error.message, {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+           
+            Setloding(false);
           });
-          Setloding(false)
-        
-      })
-      .catch((error)=>{
-        toast.error(error.message, {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          
-          });
-          Setloding(false)
-        
-      })
         formik.resetForm();
       })
       .catch((error) => {
-        if( error.message.includes("auth/email-already-in-use")){
-          toast.error('email allredy used ', {
+        if (error.message.includes("auth/email-already-in-use")) {
+          toast.error("email allredy used ", {
             position: "top-right",
             autoClose: 2000,
             hideProgressBar: true,
@@ -73,15 +81,14 @@ const [loding,Setloding]=useState(false)
             draggable: true,
             progress: undefined,
             theme: "colored",
-            
-            });
-            Setloding(false)
+          });
+          Setloding(false);
         }
       });
   };
 
   // console.log(formik);
-  
+
   return (
     <>
       <div>
@@ -98,9 +105,7 @@ const [loding,Setloding]=useState(false)
             type="text"
           />
           {formik.errors.fullName && formik.touched.fullName && (
-            <p className="font-roboto text-red-500">
-              {formik.errors.fullName}
-            </p>
+            <p className="font-roboto text-red-500">{formik.errors.fullName}</p>
           )}
 
           <input
@@ -111,10 +116,10 @@ const [loding,Setloding]=useState(false)
             onChange={formik.handleChange}
             type="email"
           />
-          {formik.errors.email && formik.touched.email&& (
+          {formik.errors.email && formik.touched.email && (
             <p className="font-roboto text-red-500">{formik.errors.email}</p>
           )}
-          
+
           <input
             placeholder="Enter your password"
             className="py-2 px-3 w-full border border-2 border-gray-400 outline-none rounded-lg mb-3"
@@ -123,21 +128,29 @@ const [loding,Setloding]=useState(false)
             onChange={formik.handleChange}
             type="password"
           />
-          {formik.errors.password && formik.touched.password&& (
+          {formik.errors.password && formik.touched.password && (
             <p className="font-roboto text-red-500 mb-2">
               {formik.errors.password}
             </p>
           )}
-          
-          <button disabled={loding} className="w-full py-3 bg-slate-950 text-white rounded-xl" type="submit">
-            {
-              loding ? <PropagateLoader color="#ffff"  size={6}/>    :"Sign Up"
 
-            }
+          <button
+            disabled={loding}
+            className="w-full py-3 bg-slate-950 text-white rounded-xl"
+            type="submit"
+          >
+            {loding ? <PropagateLoader color="#ffff" size={6} /> : "Sign Up"}
           </button>
         </form>
         <p className="mt-4 font-roboto font-bold text-base text-gray-400">
-          Already have an account? Please sign in.
+          Already have an account? Please{" "}
+          <Link
+            to="/login"
+            className="   hover:text-blue-700 text-xl underline"
+          >
+            sign in
+          </Link>
+          .
         </p>
       </div>
     </>

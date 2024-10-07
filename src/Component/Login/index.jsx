@@ -5,12 +5,14 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { PropagateLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { logedInuse } from "../../Feture/Slices/Loginslice";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Logincomp = ({ toast }) => {
   const auth = getAuth();
   const [loding, Setloding] = useState(false);
   const dispatch = useDispatch();
+  const navigate =useNavigate()
   const initialValues = {
     email: "",
     password: "",
@@ -30,8 +32,10 @@ const Logincomp = ({ toast }) => {
     signInWithEmailAndPassword(auth, formik.values.email, formik.values.password)
     .then(({user}) => {
     if(user.emailVerified == true){
+      Setloding(false)
     dispatch(logedInuse(user));
     localStorage.setItem("user", JSON.stringify(user));
+    navigate('/')
     
     }else{
       toast.error("please verify your email", {
@@ -45,11 +49,24 @@ const Logincomp = ({ toast }) => {
         theme: "colored",
         
         });
+        Setloding(false)
     }
      
     })
     .catch((error) => {
-     console.log(error.message);
+      if (error.message.includes("auth/invalid-credential")) {
+        toast.error("emali or pasword incoreed ", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        Setloding(false);
+      }
      
     });
   }
@@ -95,7 +112,7 @@ const Logincomp = ({ toast }) => {
           </button>
         </form>
         <p className="mt-4 font-roboto font-bold text-base text-gray-400">
-          Don’t have an account please sign up
+          Don’t have an account please <Link to="/regi" className="hover:text-orange-400 text-xl underline">sign up</Link>
         </p>
       </div>
     </>
