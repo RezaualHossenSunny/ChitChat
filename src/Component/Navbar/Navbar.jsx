@@ -1,9 +1,12 @@
 import React from "react";
 import {FaUserFriends } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const location = useLocation();
+  console.log(location.pathname);
+  
   return (
     <>
       <div className="flex items-center justify-between bg-slate-800 py-5 rounded-md px-5">
@@ -20,11 +23,13 @@ const Navbar = () => {
 
         {/* link */}
         <div className="flex items-center gap-x-5">
-       <Link to='/' className="w-14 h-14 rounded-full bg-sky-400 flex items-center justify-center">
-       <FaUserFriends className="text-3xl  text-white  " />
+
+
+       <Link to='/' className={`${location.pathname == "/" ? "text-salte-500 bg-sky-400" : "text-white "} w-14 h-14 rounded-full  flex items-center justify-center`} >
+       <FaUserFriends className="text-3xl    " />
        </Link>
 
-      <Link to='/message' className="w-14 h-14 rounded-full bg-sky-400 flex items-center justify-center">
+      <Link to='/message' className={`${location.pathname == "/message" ? "text-salte-500 bg-sky-400" : "text-white "} w-14 h-14 rounded-full  flex items-center justify-center`}>
 
       <FaFacebookMessenger className="text-3xl  text-white" />
       </Link>

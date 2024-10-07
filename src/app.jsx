@@ -6,14 +6,17 @@ import Home from "./pages/Home";
 import Logeduserourter from "./PrivateRout/Logeduserourter";
 import Notloginuser from "./PrivateRout/Notloginuser";
 import Message from "./pages/Message";
+import Rotlayout from "./Rotlayout";
 
 export function App() {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route element ={<Logeduserourter/>}>
-      <Route path="/" element ={ <Home/>}/>
-      <Route path="/message" element ={ <Message/>}/>
+     <Route element ={< Rotlayout/>}>
+     <Route path="/" element ={ <Home/>}/>
+     <Route path="/message" element ={ <Message/>}/>
+     </Route>
       </Route>
 
       <Route element={<Notloginuser/>}>
