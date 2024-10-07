@@ -3,7 +3,7 @@ import React from 'react'
 const Friendreq = () => {
   return (
     <>
-    <div className='bg-white shadow-md p-4'>
+    <div className='bg-white shadow-md p-4 '>
         <h1 className='font-roboto text-xl  py-4 font-semibold'>Friend requests</h1>
 
         <div className='flex items-center justify-between mt-4'>
