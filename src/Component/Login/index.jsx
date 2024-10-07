@@ -1,8 +1,12 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { login } from "../../Validate/Validation";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { PropagateLoader } from "react-spinners";
+
 
 const Logincomp = ({ toast }) => {
+  const auth = getAuth();
   const [loding, Setloding] = useState(false);
 
   const initialValues = {
@@ -13,11 +17,39 @@ const Logincomp = ({ toast }) => {
   const formik = useFormik({
     initialValues,
     onSubmit: () => {
-      console.log("submit");
+      sinionuser();
     },
     validationSchema: login,
   });
 
+  const sinionuser = ()=>{
+    Setloding(true)
+
+    signInWithEmailAndPassword(auth, formik.values.email, formik.values.password)
+    .then(({user}) => {
+    if(user.emailVerified == true){
+    console.log('done');
+    
+    }else{
+      toast.error("please verify your email", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+
+        theme: "colored",
+        
+        });
+    }
+     
+    })
+    .catch((error) => {
+     console.log(error.message);
+     
+    });
+  }
   return (
     <>
       <div>
@@ -56,7 +88,7 @@ const Logincomp = ({ toast }) => {
             className="w-full py-3 bg-slate-950 text-white rounded-xl"
             type="submit"
           >
-            {loding ? <PropagateLoader color="#ffff" size={6} /> : "Sign In"}
+            {loding ? <PropagateLoader color="#ffff" size={5} /> : "Sign In"}
           </button>
         </form>
         <p className="mt-4 font-roboto font-bold text-base text-gray-400">
