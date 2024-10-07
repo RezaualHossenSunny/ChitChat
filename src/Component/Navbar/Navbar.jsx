@@ -1,11 +1,28 @@
 import React from "react";
 import {FaUserFriends } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa6";
-import { Link, useLocation } from "react-router-dom";
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { logedout } from "../../Feture/Slices/Loginslice";
 const Navbar = () => {
+  const auth = getAuth();
   const location = useLocation();
-  console.log(location.pathname);
+
+  const navigate =useNavigate()
+    const dispatch =useDispatch()
+
+  const handlesignout = ()=>{
+    signOut(auth).then(() => {
+      navigate('/login')
+      localStorage.removeItem('user')
+      dispatch(logedout())
+    }).catch((error) => {
+     console.log(error);
+     
+    });
+    
+  }
   
   return (
     <>
@@ -37,7 +54,7 @@ const Navbar = () => {
 
         {/* logout */}
         <div>
-          <button className="bg-sky-400  px-4 py-4 rounded-xl w-[100px] font-roboto text-white text-xl">Logout</button>
+          <button onClick={handlesignout} className="bg-sky-400  px-4 py-4 rounded-xl w-[100px] font-roboto text-white text-xl">Logout</button>
         </div>
       </div>
     </>
