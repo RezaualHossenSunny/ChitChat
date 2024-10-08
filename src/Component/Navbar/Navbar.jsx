@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaUserFriends } from "react-icons/fa";
 import { FaFacebookMessenger } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -6,8 +6,11 @@ import { getAuth, signOut } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { logedout } from "../../Feture/Slices/Loginslice";
 import { CiCamera } from "react-icons/ci";
+import { createPortal } from "preact/compat";
+import Model from "../Modal";
 const Navbar = () => {
   const auth = getAuth();
+  const [show ,Setshow]=useState(true)
   const location = useLocation();
 
   const navigate = useNavigate();
@@ -32,8 +35,8 @@ const Navbar = () => {
         <div className="flex items-center gap-x-5">
           <div className="relative">
             <div className=" h-14  w-9 md:w-14 rounded-full bg-orange-400 overflow-hidden"></div>
-            <div className="absolute bottom-0 right-0 text-2xl  bg-white h-7 w-7 rounded-full flex items-center justify-center">
-              <CiCamera />
+            <div className="absolute bottom-0 right-0 text-2xl  bg-white h-7 w-7 rounded-full flex items-center justify-center cursor-pointer" onClick={()=> Setshow(true)}>
+              <CiCamera className="cursor-pointer" />
             </div>
           </div>
 
@@ -78,7 +81,16 @@ const Navbar = () => {
             Logout
           </button>
         </div>
+
+
       </div>
+     {show &&
+      createPortal(
+        <Model Setshow={Setshow}/>
+        ,
+      document.body
+      )
+     }
     </>
   );
 };
