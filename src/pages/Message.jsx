@@ -1,5 +1,6 @@
 import React from 'react'
 import Friend from '../Component/Friends'
+import Chat from '../Component/Chat'
 
 
 const Message = () => {
@@ -11,9 +12,9 @@ const Message = () => {
        </div>
 
 
-       <div className=" w-full ">
+       <div className="  ">
        
-       
+        <Chat/>
 
        </div>
      
