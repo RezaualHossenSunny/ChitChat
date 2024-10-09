@@ -10,7 +10,7 @@ import { createPortal } from "preact/compat";
 import Model from "../Modal";
 const Navbar = () => {
   const auth = getAuth();
-  const [show ,Setshow]=useState(true)
+  const [show ,Setshow]=useState(false)
   const location = useLocation();
 
   const navigate = useNavigate();
