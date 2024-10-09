@@ -2,7 +2,7 @@ import React from "react";
 import { Cropper } from "react-cropper";
 import { ImCross } from "react-icons/im";
 
-const Imgcroper = ({setImage,cropperRef,image}) => {
+const Imgcroper = ({setImage,cropperRef,image,getCropData}) => {
   return (
     <>
       <div className="fixed w-full h-screen top-0 left-0  flex items-center justify-center">
@@ -29,7 +29,7 @@ const Imgcroper = ({setImage,cropperRef,image}) => {
 
 
 
-          <div>
+          <div className="mt-5">
           <Cropper
           ref={cropperRef}
           style={{ height: 400, width: "100%" }}
@@ -47,6 +47,8 @@ const Imgcroper = ({setImage,cropperRef,image}) => {
           guides={true}
         />
           </div>
+
+          <button className="bg-sky-400 font-roboto text-white  font-bold w-full rounded-md mt-3 text-xl py-3" onClick={getCropData} >Upload</button>
 
 
      </div>

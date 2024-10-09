@@ -7,7 +7,7 @@ import Logeduserourter from "./PrivateRout/Logeduserourter";
 import Notloginuser from "./PrivateRout/Notloginuser";
 import Message from "./pages/Message";
 import Rotlayout from "./Rotlayout";
-
+import "cropperjs/dist/cropper.css";
 export function App() {
 const router = createBrowserRouter(
   createRoutesFromElements(
