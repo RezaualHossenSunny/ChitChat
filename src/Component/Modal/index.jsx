@@ -64,7 +64,7 @@ const handleChange =(e)=>{
         </div>
         {
           image && 
-          <Imgcroper/>
+          <Imgcroper setImage={setImage} cropperRef={cropperRef} image={image}/>
           }
 
     
