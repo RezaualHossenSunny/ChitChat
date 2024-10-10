@@ -46,7 +46,7 @@ const Navbar = () => {
 
           <div>
             <span className=" font-serif md:font-roboto  md:font-bold text-white">
-              Sunny
+              {user.displayName}
             </span>
           </div>
         </div>
