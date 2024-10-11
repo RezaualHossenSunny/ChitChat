@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, ref, set } from "firebase/database";
 import { getDownloadURL, getStorage, ref as Ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { IoMdPersonAdd } from "react-icons/io";
@@ -53,7 +53,23 @@ const Userlist = () => {
     
   },[db,user.uid, storage])
 
-console.log(users);
+// send friend req
+
+const handlefriendreq =(data)=>{
+set(ref(db,"friendrequest  "),{
+  senderName:user.displayName,
+  senderId :user.uid,
+  senderProfile: user.photoURL ?? "../../assets/Avatar.png",
+  receiverName:data.username,
+  receiverId:data.id,
+  receiverProfile: data.photoURL ?? "../../assets/Avatar.png"
+  
+
+  
+})
+
+
+}
 
   return (
     <>
@@ -64,13 +80,13 @@ console.log(users);
           users.map((item)=>(
             <div className="flex items-center justify-between mt-4">
             <div className="flex items-center gap-x-2">
-              <div className="w-12 h-12 bg-sky-500 rounded-full overflow-hidden">{
+              <div className="w-12 h-12 bg-slate-500 rounded-full overflow-hidden">{
                 <img src={item.photoURL || avatart}/>
                 }</div>
               <h3 className="font-roboto text-lg">{item.username} </h3>
             </div>
             <div>
-            <IoMdPersonAdd className="text-2xl cursor-pointer" />
+            <IoMdPersonAdd className="text-2xl cursor-pointer"  onClick={()=> handlefriendreq(item)}/>
             </div>
           </div>
           ))
