@@ -1,19 +1,24 @@
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
-import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref as storageRef,
+} from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { IoMdPersonAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
-import avatart from '../../assets/Avatar.png';
+import avatart from "../../assets/Avatar.png";
 
 const Userlist = () => {
   const user = useSelector((state) => state.login.login);
   const [users, setUsers] = useState([]);
-  const [friendReq, Setfriendreq]=useState([]);
+  const [friendReq, Setfriendreq] = useState([]);
+  const [friendReqcancel, Setfriendreqcancel] = useState([]);
   const db = getDatabase();
   const storage = getStorage();
 
   useEffect(() => {
-    const starCountRef = ref(db, 'users/');
+    const starCountRef = ref(db, "users/");
     const unsubscribe = onValue(starCountRef, async (snapshot) => {
       const usersArray = [];
       const userPromises = [];
@@ -54,23 +59,42 @@ const Userlist = () => {
     });
   };
 
-
+  // show
   useEffect(() => {
-    const starCountRef = ref(db, 'friendrequest/');
+    const starCountRef = ref(db, "friendrequest/");
     const unsubscribe = onValue(starCountRef, (snapshot) => {
       const reqArr = [];
       snapshot.forEach((item) => {
         reqArr.push(item.val().receiverId + item.val().senderId);
       });
-     
-      Setfriendreq(reqArr)
+
+      Setfriendreq(reqArr);
     });
 
     return () => unsubscribe(); // Cleanup subscription
   }, [db]);
 
-  console.log(friendReq);
-  
+  // cancell
+
+  // useEffect(() => {
+  //   const starCountRef = ref(db, "friendrequest/");
+  //   const unsubscribe = onValue(starCountRef, (snapshot) => {
+  //     const cancelReq = [];
+  //     snapshot.forEach((item) => {
+  //       reqArr.push({... item.val() , id:item.key});
+  //     });
+
+  //     Setfriendreqcancel(cancelReq);
+  //   });
+
+  //   return () => unsubscribe(); // Cleanup subscription
+  // }, [db]);
+
+  const handlecancelreq = (data)=>{
+    console.log(data)
+    
+  }
+
   return (
     <div className="p-4 h-[600px] overflow-auto">
       <h1 className="font-roboto text-xl py-4 font-semibold">All Users</h1>
@@ -82,15 +106,16 @@ const Userlist = () => {
             </div>
             <h3 className="font-roboto text-lg">{item.username}</h3>
           </div>
-          {
-          friendReq.includes(item.id + user.uid) || friendReq.includes(user.uid)  ?
-          <button>Cancel</button> 
-          :  
-          <div onClick={() => handleFriendReq(item)} >
-          <IoMdPersonAdd className="text-2xl cursor-pointer"/>
-        </div>        
-          }
-        
+          {friendReq.includes(item.id + user.uid) ||
+          friendReq.includes(user.uid) ? (
+            <button className="py-3 px-3 w-[80px] bg-red-400 font-bold text-white font-roboto rounded-md " onClick={()=> handlecancelreq(item)}>
+              Cancel
+            </button>
+          ) : (
+            <div onClick={() => handleFriendReq(item)}>
+              <IoMdPersonAdd className="text-2xl cursor-pointer" />
+            </div>
+          )}
         </div>
       ))}
     </div>
