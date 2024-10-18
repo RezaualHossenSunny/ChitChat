@@ -89,14 +89,14 @@ const Userlist = () => {
   };
 
   if (loading) {
-    return <div>Loading users...</div>; // Add a loading state
+    return <div className="text-orange-400">Loading users...</div>; // Add a loading state
   }
 
   return (
-    <div className="p-4 h-[600px] overflow-auto">
+    <div className="p-4  h-[500px] md:h-[600px] overflow-auto">
       <h1 className="font-roboto text-xl py-4 font-semibold">All Users</h1>
       {users.map((item) => (
-        <div className="flex items-center justify-between mt-4" key={item.id}>
+        <div className="flex items-center justify-between mt-4 " key={item.id}>
           <div className="flex items-center gap-x-2">
             <div className="w-12 h-12 bg-slate-500 rounded-full overflow-hidden">
               <img src={item.photoURL || avatart} alt={item.username} />

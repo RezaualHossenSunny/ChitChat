@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="  flex items-center justify-between bg-slate-800 py-5 rounded-md px-5">
+      <div className="  flex items-center justify-between bg-slate-800 py-5 rounded-md px-5  fixed w-full">
         {/* photo */}
         <div className="flex items-center gap-x-5">
           <div className="relative">
