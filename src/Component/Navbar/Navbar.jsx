@@ -32,14 +32,14 @@ const Navbar = () => {
 
   return (
     <>
-      <div className=" flex items-center justify-between bg-slate-800 py-5 rounded-md px-5">
+      <div className="  flex items-center justify-between bg-slate-800 py-5 rounded-md px-5">
         {/* photo */}
         <div className="flex items-center gap-x-5">
           <div className="relative">
-            <div className=" h-14  w-9 md:w-14 rounded-full bg-orange-400 overflow-hidden">
+            <div className=" h-14   w-12 md:w-14 rounded-full bg-orange-400 overflow-hidden">
               <img src={user.photoURL || avatart}/>
             </div>
-            <div className="absolute bottom-0 right-0 text-2xl  bg-white h-7 w-7 rounded-full flex items-center justify-center cursor-pointer" onClick={()=> Setshow(true)}>
+            <div className="absolute bottom-0 right-0  text-sm md:text-2xl  bg-white h-4 md:h-7  w-4 md:w-7 rounded-full flex items-center justify-center cursor-pointer" onClick={()=> Setshow(true)}>
               <CiCamera className="cursor-pointer" />
             </div>
           </div>

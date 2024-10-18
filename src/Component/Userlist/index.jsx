@@ -1,9 +1,5 @@
-import { getDatabase, onValue, push, ref, set } from "firebase/database";
-import {
-  getDownloadURL,
-  getStorage,
-  ref as storageRef,
-} from "firebase/storage";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
+import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { IoMdPersonAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
@@ -12,8 +8,9 @@ import avatart from "../../assets/Avatar.png";
 const Userlist = () => {
   const user = useSelector((state) => state.login.login);
   const [users, setUsers] = useState([]);
-  const [friendReq, Setfriendreq] = useState([]);
-  const [friendReqcancel, Setfriendreqcancel] = useState([]);
+  const [friendReq, setFriendReq] = useState([]);
+  const [friendReqCancel, setFriendReqCancel] = useState([]);
+  const [loading, setLoading] = useState(true);
   const db = getDatabase();
   const storage = getStorage();
 
@@ -43,56 +40,56 @@ const Userlist = () => {
 
       const resolvedUsers = await Promise.all(userPromises);
       setUsers(resolvedUsers);
+      setLoading(false);
     });
 
-    return () => unsubscribe(); // Cleanup subscription
+    return () => unsubscribe();
   }, [db, user.uid, storage]);
 
-  const handleFriendReq = (data) => {
+  const handleFriendReq = ({ username, id, photoURL }) => {
     set(push(ref(db, "friendrequest")), {
       senderName: user.displayName,
       senderId: user.uid,
       senderProfile: user.photoURL ?? avatart,
-      receiverName: data.username,
-      receiverId: data.id,
-      receiverProfile: data.photoURL ?? avatart,
+      receiverName: username,
+      receiverId: id,
+      receiverProfile: photoURL ?? avatart,
     });
   };
 
-  // show
   useEffect(() => {
     const starCountRef = ref(db, "friendrequest/");
     const unsubscribe = onValue(starCountRef, (snapshot) => {
       const reqArr = [];
+      const cancelReqArr = [];
+      
       snapshot.forEach((item) => {
-        reqArr.push(item.val().receiverId + item.val().senderId);
+        const { receiverId, senderId } = item.val();
+        reqArr.push(receiverId + senderId);
+        reqArr.push(senderId + receiverId); // Include the reverse for bi-directional requests
+        cancelReqArr.push({ ...item.val(), id: item.key });
       });
-
-      Setfriendreq(reqArr);
+  
+      setFriendReq(reqArr);
+      setFriendReqCancel(cancelReqArr);
     });
-
-    return () => unsubscribe(); // Cleanup subscription
+  
+    return () => unsubscribe();
   }, [db]);
+  
 
-  // cancell
+  const handleCancelReq = (data) => {
+    const reqCancel = friendReqCancel.find(
+      (req) => req.receiverId === data && req.senderId === user.uid
+    );
 
-  // useEffect(() => {
-  //   const starCountRef = ref(db, "friendrequest/");
-  //   const unsubscribe = onValue(starCountRef, (snapshot) => {
-  //     const cancelReq = [];
-  //     snapshot.forEach((item) => {
-  //       reqArr.push({... item.val() , id:item.key});
-  //     });
+    if (reqCancel) {
+      remove(ref(db, 'friendrequest/' + reqCancel.id));
+    }
+  };
 
-  //     Setfriendreqcancel(cancelReq);
-  //   });
-
-  //   return () => unsubscribe(); // Cleanup subscription
-  // }, [db]);
-
-  const handlecancelreq = (data)=>{
-    console.log(data)
-    
+  if (loading) {
+    return <div>Loading users...</div>; // Add a loading state
   }
 
   return (
@@ -108,7 +105,10 @@ const Userlist = () => {
           </div>
           {friendReq.includes(item.id + user.uid) ||
           friendReq.includes(user.uid) ? (
-            <button className="py-3 px-3 w-[80px] bg-red-400 font-bold text-white font-roboto rounded-md " onClick={()=> handlecancelreq(item)}>
+            <button
+              className="py-3 px-3 w-[80px] bg-red-400 font-bold text-white font-roboto rounded-md"
+              onClick={() => handleCancelReq(item.id)}
+            >
               Cancel
             </button>
           ) : (
