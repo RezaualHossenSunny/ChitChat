@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from 'firebase/database';
+import { getDatabase, onValue, push, ref, remove, set } from 'firebase/database';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import avatart from "../../assets/Avatar.png";
@@ -22,7 +22,21 @@ const Friendreq = () => {
       setFriendReq(friendreq)
     });
   },[db,user.uid])
-console.log(friendReq);
+
+
+  //acept req
+
+  const handleAccept=(data)=>{
+
+    set(push(ref(db,'friends')),{
+      ...data
+    }).then(()=>{
+      remove(ref(db,'friendrequest/' + data.id))
+    })
+    
+
+  } 
+
 
   return (
     <>
@@ -46,7 +60,7 @@ console.log(friendReq);
 
             </div>
             <div className='flex gap-x-2'>
-                <button className='py-3 px-5 rounded-xl w-24 bg-sky-400 font-roboto text-white font-medium'>Accept</button>
+                <button className='py-3 px-5 rounded-xl w-24 bg-sky-400 font-roboto text-white font-medium' onClick={()=>handleAccept(item)}>Accept</button>
                 <button className='py-3 px-5 rounded-xl w-24 bg-red-400 font-roboto text-white font-medium'>Reject</button>
                 
 
