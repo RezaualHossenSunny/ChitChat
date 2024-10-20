@@ -111,6 +111,7 @@ const Userlist = () => {
             >
               Cancel
             </button>
+            
           ) : (
             <div onClick={() => handleFriendReq(item)}>
               <IoMdPersonAdd className="text-2xl cursor-pointer" />
